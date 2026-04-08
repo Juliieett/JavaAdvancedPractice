@@ -1,6 +1,6 @@
 ## Summary
 
-This is a strong Assignment 1 submission with real JMH usage, all required input distributions, explicit correctness verification, a compliant radix implementation, and a PDF report. The main weakness is practical benchmark design for Bubble Sort: the tracked benchmark runs Bubble Sort on the full `1,000,000`-element scope without a separate reduced-size path.
+This is a strong Assignment 1 submission with real JMH usage, all required input distributions, explicit correctness verification, a compliant radix implementation, and a PDF report.
 
 ## Strengths
 
@@ -12,7 +12,7 @@ This is a strong Assignment 1 submission with real JMH usage, all required input
 
 ## Findings
 
-- Moderate: `Assignment1/src/main/java/SortingBenchmark.java` benchmarks Bubble Sort on the full `1,000,000`-element scope for every distribution and does not provide the kind of separate reduced-size Bubble Sort path that would make the benchmark easier to execute practically.
+- None.
 
 ## Requirement Checklist
 
@@ -33,4 +33,4 @@ This is a strong Assignment 1 submission with real JMH usage, all required input
 
 ## Verdict
 
-This repository satisfies the Assignment 1 technical requirements well. The only meaningful weakness is benchmark practicality around Bubble Sort, not missing functionality.
+Meets requirements.

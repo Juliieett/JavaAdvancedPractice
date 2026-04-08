@@ -1,12 +1,11 @@
-The submission is already strong. The remaining improvement is benchmark practicality.
+No material fixes are required based on `A1_review.md`.
 
 Action items:
 
-- Split Bubble Sort into its own reduced-size benchmark path instead of benchmarking it at the full `1,000,000`-element scope.
-- Keep the scalable algorithms at `1,000,000` elements and document the split scope explicitly in the report if you change it.
+- No corrective work is required for Assignment 1 compliance.
+- If you rerun benchmarks or revise results later, keep `Assignment1/report.pdf` aligned with the tracked code and measured output.
 
 Recommended order:
 
-1. Add a separate Bubble Sort benchmark size.
-2. Re-run the benchmark.
-3. Update the report so it matches the tracked benchmark configuration.
+1. No corrective work is required.
+2. If you make later changes, rerun correctness checks first and benchmarks second.

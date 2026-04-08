@@ -4,34 +4,36 @@ Derived only from `A1_review.md`.
 
 ## Internal Marks
 
-- Core Assignment Compliance: `34/35`
-- Benchmarking Quality: `17/20`
+- Core Assignment Compliance: `23/23`
+- Benchmarking Quality: `20/20`
 - Algorithm Correctness and Fidelity: `25/25`
 - Correctness Verification: `20/20`
-- Base internal mark: `96/100`
+- Report Evaluation: `10/12`
+- Base internal mark: `98/100`
 - Assignment-specific bonus internal mark: `6/10`
 
 ## Gating Rules Applied
 
-- Rule 1 (`No JMH, No More Than 1/4`): not triggered because `A1_review.md` records a complete JMH benchmark project.
-- Rule 2 (`Missing Core Benchmark Scope, No More Than 3/4`): not triggered because the review records the required benchmark size, required reference benchmark, and required radix-sort design.
-- Rule 3 (`Broken Correctness Evidence, No More Than 3/4`): not triggered because correctness verification is explicit.
-- Rule 4 (`Bonus Requires Strong Baseline`): the regular grade reaches `4/4`, but the assignment-specific bonus is not awarded because the review does not evidence clearly above-baseline extras beyond a strong compliant submission.
+- Rule 1 (`No Actual JMH Benchmarking, No More Than 1/4`): not triggered because `A1_review.md` records real JMH benchmark source for the required task.
+- Rule 2 (`No Report At All, No More Than 3/4`): not triggered because `A1_review.md` records a report in an accepted submitted format.
+- Rule 3 (`Missing Core Benchmark Scope, No More Than 3/4`): not triggered because the required scalable benchmark scope, `Arrays.sort(int[])` benchmark, and required radix-sort variant are all evidenced.
+- Rule 4 (`Broken Correctness Evidence, No More Than 3/4`): not triggered because correctness verification against `Arrays.sort()` and explicit sortedness checking are evidenced.
+- Rule 5 (`Bonus Requires Strong Baseline`): the regular grade reaches `4/4`, but the assignment-specific bonus is still not awarded because the review does not evidence a distinctly above-baseline bonus case.
 
 ## Regular Assignment Grade
 
-- Base internal mark `96/100` converts to `4/4`.
+- Base internal mark `98/100` converts to `4/4`.
 
 ## Course-Level Bonus Decisions
 
 - Early submission: `not determined from available evidence`
-- First submission `90+`: `1/1` because the recorded base internal mark is `96/100`
+- First submission `90+`: `1/1` because the recorded base internal mark is `98/100`
 
 ## Assignment-Specific Bonus Decision
 
 - Assignment-specific bonus internal mark: `6/10`
 - Assignment-specific bonus: `0/1`
-- Reason: the submission is strong, but the recorded review evidence does not justify the separate bonus point.
+- Reason: `A1_review.md` evidences a complete strong submission, but not enough extra evidence to justify the separate Assignment 1 bonus point.
 
 ## Final Grade
 
@@ -44,4 +46,4 @@ Current recorded total from determined components: `4/4 + 1/1 + 0/1`
 
 ## Rationale
 
-The review supports a top regular grade because the repository is complete, technically correct, and benchmarked with real JMH. The only deduction is for practical Bubble Sort benchmarking design, which is not serious enough to reduce the regular grade below `4/4`.
+`A1_review.md` now supports a complete and technically strong Assignment 1 evaluation with no remaining findings. The submission earns full regular credit and the course-level first-submission `90+` bonus, but the separate Assignment 1 bonus remains unawarded because the review evidence does not clearly cross the “rare and meaningful” bonus threshold.
