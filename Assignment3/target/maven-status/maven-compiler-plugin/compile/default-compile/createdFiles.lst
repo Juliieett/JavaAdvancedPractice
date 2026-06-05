@@ -1,0 +1,14 @@
+columns\AppletScreen.class
+columns\model\GameConfig.class
+columns\model\GameController.class
+columns\model\kernel\RandomGenerator.class
+columns\Columns$1.class
+columns\Columns.class
+columns\model\Figure.class
+columns\model\View.class
+columns\model\kernel\ModelListener.class
+columns\model\GameEvent.class
+columns\model\Board.class
+columns\model\kernel\Screen.class
+columns\model\GameController$1.class
+columns\model\kernel\Platform.class

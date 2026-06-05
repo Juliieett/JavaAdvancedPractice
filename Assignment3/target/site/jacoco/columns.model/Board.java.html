@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Board.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">columns-game</a> &gt; <a href="index.source.html" class="el_package">columns.model</a> &gt; <span class="el_source">Board.java</span></div><h1>Board.java</h1><pre class="source lang-java linenums">package columns.model;
+
+import columns.model.kernel.ModelListener;
+
+<span class="fc" id="L5">class Board {</span>
+
+    public int newField[][];
+    int oldField[][];
+    public int level;
+    public long Score;
+    public long DScore;
+    public int figuresMatchedCounter;
+<span class="fc" id="L13">    public boolean noChanges = true;</span>
+    public Figure figure;
+
+    private ModelListener listener;
+
+    public void setModelListener(ModelListener listener) {
+<span class="fc" id="L19">        this.listener = listener;</span>
+<span class="fc" id="L20">    }</span>
+
+    public void initBoard() {
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (int c = 0; c &lt; GameConfig.WIDTH + 1; c++) {</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">            for (int r = 0; r &lt; GameConfig.DEPTH + 1; r++) {</span>
+<span class="fc" id="L25">                newField[c][r] = 0;</span>
+<span class="fc" id="L26">                oldField[c][r] = 0;</span>
+            }
+        }
+<span class="fc" id="L29">        level = 0;</span>
+<span class="fc" id="L30">        Score = 0;</span>
+<span class="fc" id="L31">        figuresMatchedCounter = 0;</span>
+<span class="fc" id="L32">    }</span>
+
+    void copyFieldsNew2Old() {
+        int i;
+        int j;
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (i = 1; i &lt;= GameConfig.DEPTH; i++) {</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            for (j = 1; j &lt;= GameConfig.WIDTH; j++) {</span>
+<span class="fc" id="L39">                oldField[j][i] = newField[j][i];</span>
+            }
+        }
+<span class="fc" id="L42">    }</span>
+
+    public void dropFigure(Figure f) {
+        int zz;
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (f.y &lt; GameConfig.DEPTH - 2) {</span>
+<span class="fc" id="L47">            zz = GameConfig.DEPTH;</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            while (newField[f.x][zz] &gt; 0) {</span>
+<span class="fc" id="L49">                zz--;</span>
+            }
+<span class="fc" id="L51">            DScore = (((level + 1) * (GameConfig.DEPTH * 2 - f.y - zz) * 2) % 5) * 5;</span>
+<span class="fc" id="L52">            f.y = zz - 2;</span>
+        }
+<span class="fc" id="L54">    }</span>
+
+    public void initFields() {
+<span class="fc" id="L57">        newField = new int[GameConfig.WIDTH + 2][GameConfig.DEPTH + 2];</span>
+<span class="fc" id="L58">        oldField = new int[GameConfig.WIDTH + 2][GameConfig.DEPTH + 2];</span>
+<span class="fc" id="L59">    }</span>
+
+    public void pasteFigure(Figure f) {
+<span class="fc" id="L62">        newField[f.x][f.y] = f.c[1];</span>
+<span class="fc" id="L63">        newField[f.x][f.y + 1] = f.c[2];</span>
+<span class="fc" id="L64">        newField[f.x][f.y + 2] = f.c[3];</span>
+<span class="fc" id="L65">    }</span>
+
+    void changeLevelIfNeeded() {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (figuresMatchedCounter &gt;= GameConfig.NEXT_LEVEL_THRESHOLD) {</span>
+<span class="fc" id="L69">            figuresMatchedCounter = 0;</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if (level &lt; GameConfig.MAX_LEVEL) {</span>
+<span class="fc" id="L71">                level = level + 1;</span>
+            }
+<span class="fc" id="L73">            listener.levelHasChanged(level);</span>
+        }
+<span class="fc" id="L75">    }</span>
+
+    void packField() {
+        int i, j, n;
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        for (i = 1; i &lt;= GameConfig.WIDTH; i++) {</span>
+<span class="fc" id="L80">            n = GameConfig.DEPTH;</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            for (j = GameConfig.DEPTH; j &gt; 0; j--) {</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                if (oldField[i][j] &gt; 0) {</span>
+<span class="fc" id="L83">                    newField[i][n] = oldField[i][j];</span>
+<span class="fc" id="L84">                    n--;</span>
+                }
+            }
+<span class="fc bfc" id="L87" title="All 2 branches covered.">            for (j = n; j &gt; 0; j--) {</span>
+<span class="fc" id="L88">                newField[i][j] = 0;</span>
+            }
+        }
+<span class="fc" id="L91">    }</span>
+
+    void checkNeighbours(int a, int b, int c, int d, int i, int j) {
+<span class="fc bfc" id="L94" title="All 4 branches covered.">        if ((newField[j][i] == newField[a][b]) &amp;&amp; (newField[j][i] == newField[c][d])) {</span>
+<span class="fc" id="L95">            oldField[a][b] = 0;</span>
+<span class="fc" id="L96">            oldField[j][i] = 0;</span>
+<span class="fc" id="L97">            oldField[c][d] = 0;</span>
+<span class="fc" id="L98">            listener.tripletDetected(a, b, c, d, i, j);</span>
+<span class="fc" id="L99">            noChanges = false;</span>
+<span class="fc" id="L100">            Score = Score + (level + 1) * 10;</span>
+<span class="fc" id="L101">            figuresMatchedCounter = figuresMatchedCounter + 1;</span>
+        }
+<span class="fc" id="L103">    }</span>
+
+    public void collapse() {
+<span class="fc" id="L106">        packField();</span>
+<span class="fc" id="L107">        listener.fieldWasUpdated(newField);</span>
+<span class="fc" id="L108">        Score = Score + DScore;</span>
+<span class="fc" id="L109">        listener.scoreUpdated(Score);</span>
+<span class="fc" id="L110">        changeLevelIfNeeded();</span>
+<span class="fc" id="L111">    }</span>
+
+    public void findMatches() {
+        int i, j;
+<span class="fc" id="L115">        copyFieldsNew2Old();</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        for (i = 1; i &lt;= GameConfig.DEPTH; i++) {</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            for (j = 1; j &lt;= GameConfig.WIDTH; j++) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">                if (newField[j][i] &gt; 0) {</span>
+<span class="fc" id="L119">                    checkNeighbours(j, i - 1, j, i + 1, i, j);</span>
+<span class="fc" id="L120">                    checkNeighbours(j - 1, i, j + 1, i, i, j);</span>
+<span class="fc" id="L121">                    checkNeighbours(j - 1, i - 1, j + 1, i + 1, i, j);</span>
+<span class="fc" id="L122">                    checkNeighbours(j + 1, i - 1, j - 1, i + 1, i, j);</span>
+                }
+            }
+        }
+<span class="fc" id="L126">    }</span>
+
+    public boolean figureMayMoveDown() {
+<span class="fc bfc" id="L129" title="All 4 branches covered.">        return (figure.y &lt; GameConfig.DEPTH - 2) &amp;&amp; (newField[figure.x][figure.y + 3] == 0);</span>
+    }
+
+    public boolean canMoveLeft() {
+<span class="fc bfc" id="L133" title="All 4 branches covered.">        return (figure.x &gt; 1) &amp;&amp; (newField[figure.x - 1][figure.y + 2] == 0);</span>
+    }
+
+    public boolean canMoveRight() {
+<span class="fc bfc" id="L137" title="All 4 branches covered.">        return (figure.x &lt; GameConfig.WIDTH) &amp;&amp; (newField[figure.x + 1][figure.y + 2] == 0);</span>
+    }
+
+    public boolean isFieldFull() {
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (int i = 1; i &lt;= GameConfig.WIDTH; i++) {</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            if (newField[i][3] &gt; 0) {</span>
+<span class="fc" id="L143">                return true;</span>
+            }
+        }
+<span class="fc" id="L146">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

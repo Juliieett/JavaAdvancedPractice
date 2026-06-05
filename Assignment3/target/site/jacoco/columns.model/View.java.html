@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>View.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">columns-game</a> &gt; <a href="index.source.html" class="el_package">columns.model</a> &gt; <span class="el_source">View.java</span></div><h1>View.java</h1><pre class="source lang-java linenums">package columns.model;
+
+import columns.model.kernel.Screen;
+
+<span class="fc" id="L5">class View {</span>
+
+    private Screen screen;
+
+    public void setScreen(Screen screen) {
+<span class="fc" id="L10">        this.screen = screen;</span>
+<span class="fc" id="L11">    }</span>
+
+    public void drawBox(int x, int y, int c) {
+<span class="fc bfc" id="L14" title="All 2 branches covered.">        if (c == 0) {</span>
+<span class="fc" id="L15">            screen.setColor(Black());</span>
+<span class="fc" id="L16">            screen.fillRect(GameConfig.LEFT_BORDER + x * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE,</span>
+                    GameConfig.TOP_BORDER + y * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE, GameConfig.BOX_SIZE, GameConfig.BOX_SIZE);
+<span class="fc" id="L18">            screen.drawRect(GameConfig.LEFT_BORDER + x * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE,</span>
+                    GameConfig.TOP_BORDER + y * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE, GameConfig.BOX_SIZE, GameConfig.BOX_SIZE);
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        } else if (c == 8) {</span>
+<span class="nc" id="L21">            screen.setColor(screen.White());</span>
+<span class="nc" id="L22">            screen.drawRect(GameConfig.LEFT_BORDER + x * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE + 1,</span>
+                    GameConfig.TOP_BORDER + y * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE + 1, GameConfig.BOX_SIZE - 2,
+                    GameConfig.BOX_SIZE - 2);
+<span class="nc" id="L25">            screen.drawRect(GameConfig.LEFT_BORDER + x * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE + 2,</span>
+                    GameConfig.TOP_BORDER + y * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE + 2, GameConfig.BOX_SIZE - 4,
+                    GameConfig.BOX_SIZE - 4);
+<span class="nc" id="L28">            screen.setColor(Black());</span>
+<span class="nc" id="L29">            screen.fillRect(GameConfig.LEFT_BORDER + x * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE + 3,</span>
+                    GameConfig.TOP_BORDER + y * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE + 3, GameConfig.BOX_SIZE - 6,
+                    GameConfig.BOX_SIZE - 6);
+        } else {
+<span class="fc" id="L33">            screen.setColor(c);</span>
+<span class="fc" id="L34">            screen.fillRect(GameConfig.LEFT_BORDER + x * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE,</span>
+                    GameConfig.TOP_BORDER + y * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE, GameConfig.BOX_SIZE, GameConfig.BOX_SIZE);
+<span class="fc" id="L36">            screen.setColor(Black());</span>
+<span class="fc" id="L37">            screen.drawRect(GameConfig.LEFT_BORDER + x * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE,</span>
+                    GameConfig.TOP_BORDER + y * GameConfig.BOX_SIZE - GameConfig.BOX_SIZE, GameConfig.BOX_SIZE, GameConfig.BOX_SIZE);
+        }
+<span class="fc" id="L40">    }</span>
+
+    int Black() {
+<span class="fc" id="L43">        return screen.Black();</span>
+    }
+
+    public void drawVerticalTripletAt(int x, int y, int color1, int color2, int color3) {
+<span class="fc" id="L47">        drawBox(x, y, color1);</span>
+<span class="fc" id="L48">        drawBox(x, y + 1, color2);</span>
+<span class="fc" id="L49">        drawBox(x, y + 2, color3);</span>
+<span class="fc" id="L50">    }</span>
+
+    public void drawFigure(Figure f) {
+<span class="fc" id="L53">        drawVerticalTripletAt(f.x, f.y, f.c[1], f.c[2], f.c[3]);</span>
+<span class="fc" id="L54">    }</span>
+
+    public void hideFigure(Figure f) {
+<span class="fc" id="L57">        drawVerticalTripletAt(f.x, f.y, 0, 0, 0);</span>
+<span class="fc" id="L58">    }</span>
+
+    public void drawField(int[][] field) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        for (int i = 1; i &lt;= GameConfig.DEPTH; i++) {</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">            for (int j = 1; j &lt;= GameConfig.WIDTH; j++) {</span>
+<span class="nc" id="L63">                drawBox(j, i, field[j][i]);</span>
+            }
+        }
+<span class="nc" id="L66">    }</span>
+
+    public void showHelp() {
+<span class="nc" id="L69">        screen.setColor(Black());</span>
+<span class="nc" id="L70">        screen.drawString(&quot; Keys available:&quot;, 200 - GameConfig.LEFT_BORDER, 102);</span>
+<span class="nc" id="L71">        screen.drawString(&quot;Roll Box Up: &quot;, 200 - GameConfig.LEFT_BORDER, 118);</span>
+<span class="nc" id="L72">        screen.drawString(&quot;Roll Box Down: &quot;, 200 - GameConfig.LEFT_BORDER, 128);</span>
+<span class="nc" id="L73">        screen.drawString(&quot;Figure Left: &quot;, 200 - GameConfig.LEFT_BORDER, 138);</span>
+<span class="nc" id="L74">        screen.drawString(&quot;Figure Right: &quot;, 200 - GameConfig.LEFT_BORDER, 148);</span>
+<span class="nc" id="L75">        screen.drawString(&quot;Level High/Low: +/-&quot;, 200 - GameConfig.LEFT_BORDER, 158);</span>
+<span class="nc" id="L76">        screen.drawString(&quot;Drop Figure: space&quot;, 200 - GameConfig.LEFT_BORDER, 168);</span>
+<span class="nc" id="L77">        screen.drawString(&quot;Pause: P&quot;, 200 - GameConfig.LEFT_BORDER, 180);</span>
+<span class="nc" id="L78">        screen.drawString(&quot;Quit: Esc or Q&quot;, 200 - GameConfig.LEFT_BORDER, 190);</span>
+<span class="nc" id="L79">    }</span>
+
+    public void showLevel(int level) {
+<span class="fc" id="L82">        screen.setColor(Black());</span>
+<span class="fc" id="L83">        screen.clearRect(GameConfig.LEFT_BORDER + 100, 390, 100, 20);</span>
+<span class="fc" id="L84">        screen.drawString(&quot;Level: &quot; + level, GameConfig.LEFT_BORDER + 100, 400);</span>
+<span class="fc" id="L85">    }</span>
+
+    public void showScore(long score) {
+<span class="nc" id="L88">        screen.setColor(Black());</span>
+<span class="nc" id="L89">        screen.clearRect(GameConfig.LEFT_BORDER, 390, 100, 20);</span>
+<span class="nc" id="L90">        screen.drawString(&quot;Score: &quot; + score, GameConfig.LEFT_BORDER, 400);</span>
+<span class="nc" id="L91">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AppletScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">columns-game</a> &gt; <a href="index.source.html" class="el_package">columns</a> &gt; <span class="el_source">AppletScreen.java</span></div><h1>AppletScreen.java</h1><pre class="source lang-java linenums">package columns;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Arrays;
+
+import columns.model.kernel.Screen;
+
+public class AppletScreen implements Screen {
+
+<span class="nc" id="L11">    private static final Color[] COLORS = { Color.black, Color.cyan, Color.blue, Color.red, Color.green, Color.yellow,</span>
+            Color.pink, Color.magenta, Color.white };
+
+    private Graphics g;
+
+<span class="nc" id="L16">    public AppletScreen(Graphics g) {</span>
+<span class="nc" id="L17">        this.g = g;</span>
+<span class="nc" id="L18">    }</span>
+
+    @Override
+    public void setColor(int color) {
+<span class="nc" id="L22">        g.setColor(COLORS[color]);</span>
+<span class="nc" id="L23">    }</span>
+
+    @Override
+    public void fillRect(int x, int y, int width, int height) {
+<span class="nc" id="L27">        g.fillRect(x, y, width, height);</span>
+<span class="nc" id="L28">    }</span>
+
+    @Override
+    public void drawRect(int x, int y, int width, int height) {
+<span class="nc" id="L32">        g.drawRect(x, y, width, height);</span>
+<span class="nc" id="L33">    }</span>
+
+    @Override
+    public void drawString(String string, int x, int y) {
+<span class="nc" id="L37">        g.drawString(string, x, y);</span>
+<span class="nc" id="L38">    }</span>
+
+    @Override
+    public void clearRect(int x, int y, int width, int height) {
+<span class="nc" id="L42">        g.clearRect(x, y, width, height);</span>
+<span class="nc" id="L43">    }</span>
+
+    @Override
+    public int Black() {
+<span class="nc" id="L47">        return Arrays.asList(COLORS).indexOf(Color.black);</span>
+    }
+
+    @Override
+    public int White() {
+<span class="nc" id="L52">        return Arrays.asList(COLORS).indexOf(Color.white);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">columns-game</a> &gt; <a href="index.source.html" class="el_package">columns.model</a> &gt; <span class="el_source">GameController.java</span></div><h1>GameController.java</h1><pre class="source lang-java linenums">package columns.model;
+
+import columns.model.kernel.ModelListener;
+import columns.model.kernel.Platform;
+
+public class GameController implements ModelListener {
+
+    Board board;
+<span class="fc" id="L9">    View view = new View();</span>
+    Platform platform;
+
+<span class="fc" id="L12">    public GameController(Platform platform) {</span>
+<span class="fc" id="L13">        this.platform = platform;</span>
+<span class="fc" id="L14">        board = new Board();</span>
+<span class="fc" id="L15">        board.setModelListener(this);</span>
+<span class="fc" id="L16">        board.initFields();</span>
+<span class="fc" id="L17">        view.setScreen(platform.getScreen());</span>
+<span class="fc" id="L18">    }</span>
+
+    public void renderGameView() {
+<span class="nc" id="L21">        view.showHelp();</span>
+<span class="nc" id="L22">        view.showLevel(board.level);</span>
+<span class="nc" id="L23">        view.showScore(board.Score);</span>
+<span class="nc" id="L24">        view.drawField(board.newField);</span>
+<span class="nc" id="L25">        view.drawFigure(board.figure);</span>
+<span class="nc" id="L26">    }</span>
+
+    public void runGameLoop(Platform platform) {
+<span class="nc" id="L29">        board.initBoard();</span>
+
+        do {
+<span class="nc" id="L32">            platform.setTc(platform.currentTime());</span>
+<span class="nc" id="L33">            board.figure = new Figure(platform.getRandomGenerator());</span>
+<span class="nc" id="L34">            view.drawFigure(board.figure);</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">            while (board.figureMayMoveDown()) {</span>
+<span class="nc" id="L36">                checkTimeAndMoveDownIfNeeded(platform);</span>
+<span class="nc" id="L37">                board.DScore = 0;</span>
+<span class="nc" id="L38">                processUserEventsIfAny(platform);</span>
+            }
+<span class="nc" id="L40">            board.pasteFigure(board.figure);</span>
+            do {
+<span class="nc" id="L42">                board.noChanges = true;</span>
+<span class="nc" id="L43">                board.findMatches();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">                if (foundMatches()) {</span>
+<span class="nc" id="L45">                    platform.delay(500);</span>
+<span class="nc" id="L46">                    board.collapse();</span>
+                }
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            } while (foundMatches());</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        } while (!board.isFieldFull());</span>
+<span class="nc" id="L50">    }</span>
+
+    boolean foundMatches() {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        return !board.noChanges;</span>
+    }
+
+    void processUserEventsIfAny(Platform platform) {
+        do {
+<span class="nc" id="L58">            platform.delay(50);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">            if (platform.isKeyPressed()) {</span>
+<span class="nc" id="L60">                processEvent(platform.getEvent());</span>
+            }
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        } while ((int) (platform.currentTime() - platform.getTc()) &lt;= (GameConfig.MAX_LEVEL - board.level) * GameConfig.TIME_SHIFT</span>
+                + GameConfig.MIN_TIME_SHIFT);
+<span class="nc" id="L64">    }</span>
+
+    void checkTimeAndMoveDownIfNeeded(Platform platform) {
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if ((int) (platform.currentTime() - platform.getTc()) &gt; (GameConfig.MAX_LEVEL - board.level)</span>
+                * GameConfig.TIME_SHIFT
+                + GameConfig.MIN_TIME_SHIFT) {
+<span class="nc" id="L70">            platform.setTc(platform.currentTime());</span>
+<span class="nc" id="L71">            view.hideFigure(board.figure);</span>
+<span class="nc" id="L72">            board.figure.moveDown();</span>
+<span class="nc" id="L73">            view.drawFigure(board.figure);</span>
+        }
+<span class="nc" id="L75">    }</span>
+
+    @Override
+    public void levelHasChanged(int level) {
+<span class="nc" id="L79">        view.showLevel(level);</span>
+<span class="nc" id="L80">    }</span>
+
+    @Override
+    public void tripletDetected(int a, int b, int c, int d, int i, int j) {
+<span class="nc" id="L84">        view.drawBox(a, b, 8);</span>
+<span class="nc" id="L85">        view.drawBox(j, i, 8);</span>
+<span class="nc" id="L86">        view.drawBox(c, d, 8);</span>
+<span class="nc" id="L87">    }</span>
+
+    @Override
+    public void fieldWasUpdated(int[][] field) {
+<span class="nc" id="L91">        view.drawField(field);</span>
+<span class="nc" id="L92">    }</span>
+
+    @Override
+    public void scoreUpdated(long score) {
+<span class="nc" id="L96">        view.showScore(score);</span>
+<span class="nc" id="L97">    }</span>
+
+    void processEvent(GameEvent event) {
+<span class="fc" id="L100">        platform.setKeyPressed(false);</span>
+<span class="pc bpc" id="L101" title="1 of 9 branches missed.">        switch (event) {</span>
+            case LEFT:
+<span class="fc bfc" id="L103" title="All 2 branches covered.">                if (board.canMoveLeft()) {</span>
+<span class="fc" id="L104">                    view.hideFigure(board.figure);</span>
+<span class="fc" id="L105">                    board.figure.moveLeft();</span>
+<span class="fc" id="L106">                    view.drawFigure(board.figure);</span>
+                }
+                break;
+            case RIGHT:
+<span class="fc bfc" id="L110" title="All 2 branches covered.">                if (board.canMoveRight()) {</span>
+<span class="fc" id="L111">                    view.hideFigure(board.figure);</span>
+<span class="fc" id="L112">                    board.figure.moveRight();</span>
+<span class="fc" id="L113">                    view.drawFigure(board.figure);</span>
+                }
+                break;
+            case UP:
+<span class="fc" id="L117">                board.figure.rotateUp();</span>
+<span class="fc" id="L118">                view.drawFigure(board.figure);</span>
+<span class="fc" id="L119">                break;</span>
+            case DOWN:
+<span class="fc" id="L121">                board.figure.rotateDown();</span>
+<span class="fc" id="L122">                view.drawFigure(board.figure);</span>
+<span class="fc" id="L123">                break;</span>
+            case DROP:
+<span class="fc" id="L125">                view.hideFigure(board.figure);</span>
+<span class="fc" id="L126">                board.dropFigure(board.figure);</span>
+<span class="fc" id="L127">                view.drawFigure(board.figure);</span>
+<span class="fc" id="L128">                platform.setTc(0);</span>
+<span class="fc" id="L129">                break;</span>
+            case PAUSE:
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">                while (!platform.isKeyPressed()) {</span>
+<span class="nc" id="L132">                    view.hideFigure(board.figure);</span>
+<span class="nc" id="L133">                    platform.delay(500);</span>
+<span class="nc" id="L134">                    view.drawFigure(board.figure);</span>
+<span class="nc" id="L135">                    platform.delay(500);</span>
+                }
+<span class="fc" id="L137">                platform.setTc(platform.currentTime());</span>
+<span class="fc" id="L138">                break;</span>
+            case LEVEL_DOWN:
+<span class="fc bfc" id="L140" title="All 2 branches covered.">                if (board.level &gt; 0) {</span>
+<span class="fc" id="L141">                    board.level = board.level - 1;</span>
+                }
+<span class="fc" id="L143">                board.figuresMatchedCounter = 0;</span>
+<span class="fc" id="L144">                view.showLevel(board.level);</span>
+<span class="fc" id="L145">                break;</span>
+            case LEVEL_UP:
+<span class="fc bfc" id="L147" title="All 2 branches covered.">                if (board.level &lt; GameConfig.MAX_LEVEL) {</span>
+<span class="fc" id="L148">                    board.level = board.level + 1;</span>
+                }
+<span class="fc" id="L150">                board.figuresMatchedCounter = 0;</span>
+<span class="fc" id="L151">                view.showLevel(board.level);</span>
+<span class="fc" id="L152">                break;</span>
+            default:
+                break;
+        }
+<span class="fc" id="L156">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
